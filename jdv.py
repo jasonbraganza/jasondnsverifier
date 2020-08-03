@@ -43,7 +43,7 @@ Cloudflare DoH lookup:\t{cloudflare_ip}"""
                     )
     except:
         print(
-            "Create a file 'dumpfile.txt' in the current directory with a list of domains; one domain per line"
+            "Create a file 'dumpsites.txt' in the current directory with a list of domains; one domain per line"
         )
 
 
