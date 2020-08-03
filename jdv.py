@@ -9,6 +9,10 @@ import requests
 
 
 def main():
+    get_list_of_sites()
+
+
+def get_list_of_sites():
     try:
         with open("dumpsites.txt") as list_of_sites:
             for each_site in list_of_sites:
@@ -24,12 +28,12 @@ def main():
 
                 print(
                     f"""
----
+    ---
 
-Site: {each_site}
-Local DNS lookup:\t{local_ip}
-Google DoH lookup:\t{google_ip}
-Cloudflare DoH lookup:\t{cloudflare_ip}"""
+    Site: {each_site}
+    Local DNS lookup:\t{local_ip}
+    Google DoH lookup:\t{google_ip}
+    Cloudflare DoH lookup:\t{cloudflare_ip}"""
                 )
                 if local_ip == google_ip and local_ip == cloudflare_ip:
                     print("All ip lookups match.")
