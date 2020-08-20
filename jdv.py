@@ -5,50 +5,33 @@ Take a list of domains (one per line) from a text file as input, find the IP add
 
 """
 import socket
+import sys
+
 import requests
 
 
 def main():
+    list_of_sites = []
     get_list_of_sites()
+    compare_list_with_providers(list_of_sites)
 
 
 def get_list_of_sites():
+
     try:
-        with open("dumpsites.txt") as list_of_sites:
-            for each_site in list_of_sites:
-                each_site = each_site.strip().lower()
-                local_ip = socket.gethostbyname(each_site).strip()
-                google_lookup = requests.get(
-                    f"https://dns.google/resolve?name={each_site}"
-                )
-                google_ip = google_lookup.json()["Answer"][0]["data"].strip()
-                cloudflare_url = f"https://cloudflare-dns.com/dns-query?name={each_site}&type=A&ct=application/dns-json"
-                cloudflare_lookup = requests.get(cloudflare_url)
-                cloudflare_ip = cloudflare_lookup.json()["Answer"][0]["data"].strip()
+        if sys.argv[1]:
 
-                print(
-                    f"""
-    ---
+            with open(f"{sys.argv[1]}") as list_to_process:
+                for each_site in list_to_process:
+                    # print(each_site)
+                    list_of_sites.append(each_site)
 
-    Site: {each_site}
-    Local DNS lookup:\t{local_ip}
-    Google DoH lookup:\t{google_ip}
-    Cloudflare DoH lookup:\t{cloudflare_ip}"""
-                )
-                if local_ip == google_ip and local_ip == cloudflare_ip:
-                    print("All ip lookups match.")
-                elif local_ip == google_ip and not local_ip == cloudflare_ip:
-                    print("Local ip matches with Google, but not Cloudflare.")
-                elif local_ip == cloudflare_ip and not local_ip == google_ip:
-                    print("Local dns lookup matches with Cloudflare, but not Google.")
-                else:
-                    print(
-                        "Local dns lookup does not match with either Google or Cloudflare."
-                    )
     except:
-        print(
-            "Create a file 'dumpsites.txt' in the current directory with a list of domains; one domain per line"
-        )
+        print("Please give a text file of domains, one per line, to process.")
+
+
+def compare_list_with_providers(some_list_to_process):
+    print(some_list_to_process)
 
 
 if __name__ == "__main__":
