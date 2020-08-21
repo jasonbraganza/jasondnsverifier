@@ -7,4 +7,6 @@ Requirements:
 - Python 3.6
 - And everything from the requirements.txt file.
 
-`python jdv.py` to run the program
+You’ll need a text file full of sites, one per line.
+  
+`python jdv.py 'filename.txt'` to run the program
